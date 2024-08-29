@@ -1,18 +1,21 @@
-import { useState } from 'react'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import Index from './pages/Index/Index'
+import Signin from './pages/signin/Signin'
+import User from './pages/user/User'
+
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <h1>hello</h1>
-        
-      </div>
-    
-    </>
-  )
-}
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Index />} />
+        <Route path="/signin" element={<Signin />} />
+        <Route path="/user" element={<User />} />
+        <Route path="*" element={<Index />} />
+      </Routes>
+    </BrowserRouter>  
+  );
+};
 
 export default App
