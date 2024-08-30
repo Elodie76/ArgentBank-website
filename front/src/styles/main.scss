@@ -3,7 +3,16 @@
     // base/
     @import './settings';
 
+    // pages/
+    @import '../pages/index/index';
+
     // components/
+
     @import '../components/navigation/navigation';
+
     @import '../components/hero/hero';
+    @import '../components/feature-item/feature-item';
+
     @import '../components/footer/footer';
+
+    
