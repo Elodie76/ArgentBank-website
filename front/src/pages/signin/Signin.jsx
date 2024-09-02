@@ -24,7 +24,7 @@ const Signin = () => {
                             <input type='checkbox' id='remember-me' />
                             <label htmlFor='remember-me'>Remember me</label>
                         </div>
-                        <Button title='Sign in' className='sign-in-button' />
+                        <Button title='Sign In' className='sign-in-button' txtColor='btn-txt-color' styleAjust='p' />
                     </form>
                 </section>    
             </main>

@@ -3,7 +3,6 @@ import Index from './pages/Index/Index'
 import Signin from './pages/signin/Signin'
 import User from './pages/user/User'
 
-import './App.css'
 
 function App() {
   return (

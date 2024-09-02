@@ -6,8 +6,9 @@ const User = () => {
     return (
         <div>
             <Navigation />
-            <main>
+            <main className='main bg-dark'>
                 <h1>User</h1>    
+                <h2 class="sr-only">Accounts</h2>
             </main>
             <Footer />
         </div>

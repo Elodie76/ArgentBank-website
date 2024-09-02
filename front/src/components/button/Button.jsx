@@ -5,9 +5,9 @@ const Button = (props) => {
     return (
         <div>
             
-            <button className='{props.className}'>
-                <NavLink to={'/user'}>
-                    <p>{props.title}</p>
+            <button className={props.className}>
+                <NavLink className={props.txtColor} to={'/user'}>
+                    <p className={props.styleAjust}>{props.title}</p>
                 </NavLink> 
             </button>
         </div>
