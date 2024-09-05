@@ -5,8 +5,11 @@ import Button from '../../components/button/Button';
 
 const Signin = () => {
     return (
-        <div>
-            <Navigation />
+        <div className='page-container'>
+            <Navigation
+                SignInOut='Sign In'
+                icon='fa fa-user-circle'
+            />
             <main className="main bg-dark">
                 <section className='sign-in-content'>
                     <i className='fa fa-user-circle sign-in-icon'></i>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-const Navigation = () => {
+const Navigation = (props) => {
     return (
         <nav >
             <ul className='main-nav'>
@@ -14,8 +14,8 @@ const Navigation = () => {
                 </NavLink>
                 <NavLink className='main-nav-item' to={'/signin'}>
                     <li>
-                        <i className="fa fa-user-circle"></i>
-                        <p>Sign-in</p>
+                        <i className={props.icon}></i>
+                        <p>{props.SignInOut}</p>
                     </li>
                     
                 </NavLink> 

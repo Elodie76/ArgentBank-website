@@ -7,7 +7,10 @@ import FeatureItem from '../../components/feature-item/FeatureItem';
 const Index = () => {
     return (
         <div>
-            <Navigation />
+            <Navigation
+                SignInOut='Sign In'
+                icon='fa fa-user-circle'
+            />
             <main>
                 <Hero   />
                 <section className='features'>

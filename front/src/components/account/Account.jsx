@@ -9,9 +9,12 @@ const Account = (props) => {
                 <p class="account-amount">{props.accountAmount}</p>
                 <p class="account-amount-description">{props.accountAmountDescription}</p>
             </div>
-            <div class="account-content-wrapper cta">
-                <Button />
-                <button class="transaction-button">View transactions</button>
+            <div class="cta">
+                <Button 
+                    title='View transactions' 
+                    className='transaction-button' 
+                    txtColor='btn-txt-color' 
+                    styleAjust='p' />
             </div>
         </section>
     );
