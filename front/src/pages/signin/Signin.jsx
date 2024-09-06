@@ -8,7 +8,7 @@ const Signin = () => {
         <div className='page-container'>
             <Navigation
                 SignInOut='Sign In'
-                icon='fa fa-user-circle'
+                iconInOut='fa fa-user-circle'
             />
             <main className="main bg-dark">
                 <section className='sign-in-content'>

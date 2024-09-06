@@ -7,9 +7,11 @@ import Account from '../../components/account/Account';
 const User = () => {
     return (
         <div className='page-container'>
-            <Navigation
+            <Navigation 
+                iconUser='fa fa-user-circle'
+                userName= 'Tony Jarvis'
                 SignInOut='Sign Out'
-                icon='fa fa-sign-out'
+                iconInOut='fa fa-sign-out'
             />
             <main className='main bg-dark'>
             <div class="header">

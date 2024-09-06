@@ -9,7 +9,7 @@ const Index = () => {
         <div>
             <Navigation
                 SignInOut='Sign In'
-                icon='fa fa-user-circle'
+                iconInOut='fa fa-user-circle'
             />
             <main>
                 <Hero   />

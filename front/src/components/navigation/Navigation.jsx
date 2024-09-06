@@ -12,13 +12,23 @@ const Navigation = (props) => {
                     </li>
                     
                 </NavLink>
-                <NavLink className='main-nav-item' to={'/signin'}>
-                    <li>
-                        <i className={props.icon}></i>
-                        <p>{props.SignInOut}</p>
-                    </li>
-                    
-                </NavLink> 
+                <div className='menu-links'>
+                    <NavLink className='main-nav-item '  to={'/user'}>
+                        <li className={props.display}>
+                            <i className={props.iconUser}></i>
+                            <p>{props.userName}</p>
+                        </li>
+                        
+                    </NavLink> 
+                    <NavLink className='main-nav-item' to={'/signin'}>
+                        <li>
+                            <i className={props.iconInOut}></i>
+                            <p>{props.SignInOut}</p>
+                        </li>
+                        
+                    </NavLink> 
+                </div>
+                
             </ul>
                 
             
