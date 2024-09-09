@@ -1,9 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Navigation from '../../components/navigation/Navigation';
 import Footer from '../../components/footer/Footer';
 import Button from '../../components/button/Button';
 
+// REDUX
+import { useDispatch, useSelector } from 'react-redux';
+import { loginUser } from '../../store/features/auth/authSlice';
+
 const Signin = () => {
+
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const dispatch = useDispatch();
+    const { loading, error } = useSelector((state) => state.auth);
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        dispatch(loginUser({ email, password }));
+  };
+
     return (
         <div className='page-container'>
             <Navigation
@@ -14,10 +29,13 @@ const Signin = () => {
                 <section className='sign-in-content'>
                     <i className='fa fa-user-circle sign-in-icon'></i>
                     <h1>Sign In</h1>
-                    <form>
+                    <form onSubmit={handleSubmit}>
                         <div className='input-wrapper'>
                             <label htmlFor='username'>Username</label>
-                            <input type='text' id='username' />
+                            <input 
+                                type='text' 
+                                
+                                id='username' />
                         </div>
                         <div className='input-wrapper'>
                             <label htmlFor='password'>Password</label>

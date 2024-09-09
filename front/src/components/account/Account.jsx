@@ -1,15 +1,17 @@
 import React from 'react';
 import Button from '../button/Button';
 
+
+
 const Account = (props) => {
     return (
         <section className='account'>
-            <div class="account-content-wrapper">
-                <h3 class="account-title">{props.accountTitle}</h3>
-                <p class="account-amount">{props.accountAmount}</p>
-                <p class="account-amount-description">{props.accountAmountDescription}</p>
+            <div className="account-content-wrapper">
+                <h3 className="account-title">{props.accountTitle}</h3>
+                <p className="account-amount">{props.accountAmount}</p>
+                <p className="account-amount-description">{props.accountAmountDescription}</p>
             </div>
-            <div class="cta">
+            <div className="cta">
                 <Button 
                     title='View transactions' 
                     className='transaction-button' 

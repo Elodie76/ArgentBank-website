@@ -3,8 +3,12 @@ import Navigation from '../../components/navigation/Navigation';
 import Footer from '../../components/footer/Footer';
 import Button from '../../components/button/Button';
 import Account from '../../components/account/Account';
+import { set } from 'mongoose';
+
+
 
 const User = () => {
+
     return (
         <div className='page-container'>
             <Navigation 
@@ -14,7 +18,7 @@ const User = () => {
                 iconInOut='fa fa-sign-out'
             />
             <main className='main bg-dark'>
-            <div class="header">
+            <div className="header">
                     <h1>Welcome back<br />Tony Jarvis!</h1>
                     <Button 
                         title='Edit Name' 
@@ -23,7 +27,9 @@ const User = () => {
                         styleAjust='p' 
                     />
             </div>    
-            <h2 class="sr-only">Accounts</h2>
+            <h2 className="sr-only">Accounts</h2>
+
+
             <Account
                 accountTitle='Argent Bank Checking (x8349)'
                 accountAmount='$2,082.79'
