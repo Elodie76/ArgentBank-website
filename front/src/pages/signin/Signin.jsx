@@ -1,24 +1,42 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Axios from 'axios';
 import Navigation from '../../components/navigation/Navigation';
 import Footer from '../../components/footer/Footer';
 import Button from '../../components/button/Button';
 
 // REDUX
-import { useDispatch, useSelector } from 'react-redux';
-import { loginUser } from '../../store/features/auth/authSlice';
+
+
+
 
 const Signin = () => {
+    // hook pour récupérer les données des inputs du formulaire de connection
+    const form = useRef();
+    const navigate = useNavigate();
+    const [errorMessage, setErrorMessage] = useState('');
 
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const dispatch = useDispatch();
-    const { loading, error } = useSelector((state) => state.auth);
-
-    const handleSubmit = (e) => {
+ 
+    const handleForm = async (e) => {
         e.preventDefault();
-        dispatch(loginUser({ email, password }));
-  };
 
+        const postData = {
+            email: form.current[0].value,
+            password: form.current[1].value,
+        };
+
+        try {
+            const response = await Axios.post('http://localhost:3001/api/v1/user/login', postData);
+            console.log(response);
+            localStorage.setItem('authToken', response.data.token);
+            setErrorMessage('');
+            navigate('/user');
+        } catch (error) {
+            setErrorMessage('Connexion échouée. Veuillez vérifier vos identifiants.');
+            console.log('Login failed',error);
+        }
+    };
+    
     return (
         <div className='page-container'>
             <Navigation
@@ -29,23 +47,30 @@ const Signin = () => {
                 <section className='sign-in-content'>
                     <i className='fa fa-user-circle sign-in-icon'></i>
                     <h1>Sign In</h1>
-                    <form onSubmit={handleSubmit}>
+                    <form ref={form} onSubmit={handleForm}>
                         <div className='input-wrapper'>
-                            <label htmlFor='username'>Username</label>
+                            <label htmlFor='mail'>User email</label>
                             <input 
-                                type='text' 
-                                
-                                id='username' />
+                                type='email' 
+                                name='email'
+                                id='mail' />
                         </div>
                         <div className='input-wrapper'>
                             <label htmlFor='password'>Password</label>
-                            <input type='password' id='password' />
+                            <input 
+                                type='password'
+                                name='password'
+                                id='password' />
                         </div>
+
                         <div className='input-remember'>
                             <input type='checkbox' id='remember-me' />
                             <label htmlFor='remember-me'>Remember me</label>
                         </div>
-                        <Button title='Sign In' className='sign-in-button' txtColor='btn-txt-color' styleAjust='p' />
+                        {errorMessage && <p className='error-message'>{errorMessage}</p>}
+                        <Button 
+                        type='submit'
+                        title='Sign In' className='sign-in-button' />
                     </form>
                 </section>    
             </main>

@@ -1,13 +1,23 @@
-import React from 'react';
+import React, { useEffect} from 'react';
+import { useNavigate } from 'react-router-dom';
 import Navigation from '../../components/navigation/Navigation';
 import Footer from '../../components/footer/Footer';
 import Button from '../../components/button/Button';
 import Account from '../../components/account/Account';
-import { set } from 'mongoose';
+
 
 
 
 const User = () => {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const token = localStorage.getItem('authToken');
+        if (!token) {
+            navigate('/signin');
+        }
+    }, [navigate]);
+
 
     return (
         <div className='page-container'>
@@ -23,8 +33,6 @@ const User = () => {
                     <Button 
                         title='Edit Name' 
                         className='edit-button' 
-                        txtColor='btn-txt-color' 
-                        styleAjust='p' 
                     />
             </div>    
             <h2 className="sr-only">Accounts</h2>

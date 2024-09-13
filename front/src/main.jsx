@@ -5,9 +5,13 @@ import './styles/main.scss'
 
 // REDUX
 import { Provider } from 'react-redux';
-import { store } from './store/store';
+import { configureStore } from '@reduxjs/toolkit';
+import rootReducer from './reducers';
 
-
+const store = configureStore({
+  reducer: rootReducer,
+  devTools: true,
+});
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

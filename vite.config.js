@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [react()],
 
   server: {
-    port: 3001, // Change ce numéro pour le port souhaité
+    port: 3000, // Change ce numéro pour le port souhaité
   },
 })
 
