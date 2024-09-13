@@ -18,6 +18,9 @@ const User = () => {
         }
     }, [navigate]);
 
+    const handleSignOut = () => {
+        localStorage.removeItem('authToken');
+};
 
     return (
         <div className='page-container'>
@@ -26,6 +29,7 @@ const User = () => {
                 userName= 'Tony Jarvis'
                 SignInOut='Sign Out'
                 iconInOut='fa fa-sign-out'
+                onLogOut={handleSignOut}
             />
             <main className='main bg-dark'>
             <div className="header">

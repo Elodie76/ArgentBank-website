@@ -20,7 +20,11 @@ const Navigation = (props) => {
                         </li>
                         
                     </NavLink> 
-                    <NavLink className='main-nav-item' to={'/signin'}>
+                    <NavLink 
+                        className='main-nav-item' 
+                        to={'/signin'}
+                        onClick={props.onLogOut}
+                    >
                         <li>
                             <i className={props.iconInOut}></i>
                             <p>{props.SignInOut}</p>
