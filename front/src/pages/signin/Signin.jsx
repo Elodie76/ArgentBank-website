@@ -1,4 +1,4 @@
-import React, {  useState } from 'react';
+import React, {  useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navigation from '../../components/navigation/Navigation';
 import Footer from '../../components/footer/Footer';
@@ -19,6 +19,31 @@ function Signin() {
     
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const storedEmail = localStorage.getItem("email");
+        const storedPassword = localStorage.getItem("password");
+        const storedRememberMe = localStorage.getItem("rememberMe") === "true";
+        if (storedRememberMe) {
+            setEmail(storedEmail || "");
+            setPassword(storedPassword || "");
+            setRememberMe(storedRememberMe);
+        }
+    }, []);
+
+    // Mettre à jour les valeurs dans le localStorage lorsque le rememberMe change
+    const handleRememberMeChange = (e) => {
+    const isChecked = e.target.checked;
+    setRememberMe(isChecked);
+
+    if (!isChecked) {
+      localStorage.removeItem('rememberMe');
+      localStorage.removeItem('email');
+      localStorage.removeItem('password');
+      setEmail('');
+      setPassword('');
+    }
+  };
 
     const handleForm = async (e) => {
         e.preventDefault();
@@ -45,10 +70,15 @@ function Signin() {
                 const data = await response.json();
                 const token = data.body.token;
                 dispatch(loginSuccess(token));
-                // sessionStorage.setItem("token", token);
-                // if (rememberMe) {
-                //     localStorage.setItem("token", token);
-                // }
+                if (rememberMe) {
+                    localStorage.setItem("email", email);
+                    localStorage.setItem("password", password);
+                    localStorage.setItem("rememberMe", true);
+                } else {
+                    localStorage.removeItem("email");
+                    localStorage.removeItem("password");
+                    localStorage.removeItem("rememberMe");
+                }
                navigate('/user');
             } else {
                 setErrorMessage("Incorrect email/password");
@@ -103,7 +133,7 @@ function Signin() {
                                 type='checkbox' 
                                 id='remember-me'
                                 checked={rememberMe}
-                                onChange={(event) => setRememberMe(event.target.checked)}
+                                onChange={handleRememberMeChange}
                             />
                             <label htmlFor='remember-me'>Remember me</label>
                         </div>
