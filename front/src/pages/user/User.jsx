@@ -20,8 +20,6 @@ const User = () => {
    
     
     useEffect(() => {
-        const token = localStorage.getItem('token');
-        
         if (!token) {
             navigate('/signin');
         }else {
@@ -62,7 +60,8 @@ const User = () => {
         
 
     const handleSignOut = () => {
-        localStorage.removeItem('authToken');
+        dispatch(logout());
+
 };
 
     return (

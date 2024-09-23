@@ -45,10 +45,10 @@ function Signin() {
                 const data = await response.json();
                 const token = data.body.token;
                 dispatch(loginSuccess(token));
-                sessionStorage.setItem("token", token);
-                if (rememberMe) {
-                    localStorage.setItem("token", token);
-                }
+                // sessionStorage.setItem("token", token);
+                // if (rememberMe) {
+                //     localStorage.setItem("token", token);
+                // }
                navigate('/user');
             } else {
                 setErrorMessage("Incorrect email/password");

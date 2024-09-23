@@ -29,7 +29,12 @@ export const authReducer = (state = initialState, action) => {
             }
         }  
         case LOGOUT: {
-            return initialState;
+            return {
+                status: "VOID",
+                isConnected: false,
+                token: null,
+                error: null,
+            }
         }  
         default:
             return state;
