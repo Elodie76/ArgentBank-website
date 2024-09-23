@@ -1,34 +1,64 @@
-import React, { useRef, } from 'react';
+import React, {  useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navigation from '../../components/navigation/Navigation';
 import Footer from '../../components/footer/Footer';
 import Button from '../../components/button/Button';
+import { isValidEmail, isValidPassword } from '../../components/Utils';
 
 // REDUX
-import { useDispatch, useSelector } from 'react-redux';
-import { loginUser } from '../../actions/auth.action';
+import { useDispatch } from 'react-redux';
+import { loginSuccess, loginFailed } from '../../actions/auth.action';
 
 
 
-const Signin = () => {
-    // hook pour récupérer les données des inputs du formulaire de connection
-    const form = useRef();
+function Signin() { 
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [rememberMe, setRememberMe] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+    
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    // const error = useSelector((state) => state.auth.error); // Récupère l'erreur depuis Redux
-    //  console.log("Error from Redux", error);
- 
+
     const handleForm = async (e) => {
         e.preventDefault();
+        if (!isValidEmail(email)) {
 
-        const postData = {
-            email: form.current[0].value,
-            password: form.current[1].value,
-        };
-        dispatch(loginUser(postData)).then(() => {
-            navigate('/user'); // Redirige uniquement si tout est ok
-        });
-    };
+            setErrorMessage("Invalid email adress");
+            return;
+        }
+        if (!isValidPassword(password)) {
+            setErrorMessage("Invalid password");
+            return;
+        }
+
+
+        try {
+            const response = await fetch("http://localhost:3001/api/v1/user/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({email, password}),
+            });
+            if (response.ok) {
+                const data = await response.json();
+                const token = data.body.token;
+                dispatch(loginSuccess(token));
+                sessionStorage.setItem("token", token);
+                if (rememberMe) {
+                    localStorage.setItem("token", token);
+                }
+               navigate('/user');
+            } else {
+                setErrorMessage("Incorrect email/password");
+                dispatch(loginFailed(error));
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+    
         
     
     return (
@@ -41,27 +71,43 @@ const Signin = () => {
                 <section className='sign-in-content'>
                     <i className='fa fa-user-circle sign-in-icon'></i>
                     <h1>Sign In</h1>
-                    <form ref={form} onSubmit={e => handleForm(e)}>
+                    <form onSubmit={e => handleForm(e)}>
                         <div className='input-wrapper'>
                             <label htmlFor='mail'>User email</label>
                             <input 
                                 type='email' 
                                 name='email'
-                                id='mail' />
+                                id='mail' 
+                                value={email}
+                                
+                                onChange={(event) => setEmail(event.target.value)}
+                                
+                            />
+                                
                         </div>
                         <div className='input-wrapper'>
                             <label htmlFor='password'>Password</label>
                             <input 
                                 type='password'
                                 name='password'
-                                id='password' />
+                                id='password'
+                                value={password}
+                                
+                                onChange={(event) => setPassword(event.target.value)}
+                             />
+                                
                         </div>
 
                         <div className='input-remember'>
-                            <input type='checkbox' id='remember-me' />
+                            <input 
+                                type='checkbox' 
+                                id='remember-me'
+                                checked={rememberMe}
+                                onChange={(event) => setRememberMe(event.target.checked)}
+                            />
                             <label htmlFor='remember-me'>Remember me</label>
                         </div>
-                        {/* {error && <p className='error-message'>{error}</p>} */}
+                        {errorMessage && <p className='error-message'>{errorMessage}</p>}
                         <Button 
                         type='submit'
                         title='Sign In' className='sign-in-button' />

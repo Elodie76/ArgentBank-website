@@ -1,7 +1,12 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
+
+
+
 const Navigation = (props) => {
+    const userData = useSelector((state) => state.user.userData);
     return (
         <nav >
             <ul className='main-nav'>
@@ -16,7 +21,7 @@ const Navigation = (props) => {
                     <NavLink className='main-nav-item '  to={'/user'}>
                         <li className={props.display}>
                             <i className={props.iconUser}></i>
-                            <p>{props.userName}</p>
+                            <p>{userData.username}</p>
                         </li>
                         
                     </NavLink> 

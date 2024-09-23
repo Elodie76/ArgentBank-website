@@ -1,15 +1,36 @@
-import { POST_AUTH, AUTH_ERROR } from '../actions/auth.action';
+import { LOGIN_FAIL, LOGIN_SUCCESS, LOGOUT } from "../actions/auth.action";
 
-const initialState = { user: null, error: null };
 
-export default function authReducer(state = initialState, action) {
+/* Initial state of authentication */
+const initialState = {
+    status: "VOID",
+    isConnected: false,
+    token: null,
+    error: null,
+}
+
+export const authReducer = (state = initialState, action) => {
     switch (action.type) {
-        case POST_AUTH:
-            // reset error on success
-            return { ...state, user: action.payload, error: null };
-        case AUTH_ERROR:
-            // assign error message
-            return { ...state, error: action.payload };
+        case LOGIN_SUCCESS:
+            return {
+                ...state,
+                status: "SUCCEEDED",
+                isConnected: true,
+                token: action.payload,
+                error: null
+            }
+        
+        case LOGIN_FAIL: {
+            return {
+                ...state,
+                status: "FAILED",
+                isConnected: false,
+                error: action.payload
+            }
+        }  
+        case LOGOUT: {
+            return initialState;
+        }  
         default:
             return state;
     }

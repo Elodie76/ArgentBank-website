@@ -4,19 +4,62 @@ import Navigation from '../../components/navigation/Navigation';
 import Footer from '../../components/footer/Footer';
 import Button from '../../components/button/Button';
 import Account from '../../components/account/Account';
+import { useDispatch, useSelector } from 
+'react-redux';
+import { userProfile } from '../../actions/user.action';
 
 
 
 
 const User = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const token = useSelector((state) => state.auth.token);
+    const userData = useSelector((state) => state.user.userData);
 
+   
+    
     useEffect(() => {
-        const token = localStorage.getItem('authToken');
+        const token = localStorage.getItem('token');
+        
         if (!token) {
             navigate('/signin');
+        }else {
+            const userData = async () => {
+                try {
+                    const response = await fetch("http://localhost:3001/api/v1/user/profile", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${token}`,
+                        },
+                    });
+                    if (response.ok) {
+                        const data = await response.json();
+                        console.log(data) 
+
+                        const userData = {
+                            createdAt: data.body.createdAt,
+                            updatedAt: data.body.updatedAt,
+                            id: data.body.id,
+                            email: data.body.email,
+                            firstname: data.body.firstName,
+                            lastname: data.body.lastName,
+                            username: data.body.userName
+                        }
+                        dispatch(userProfile(userData));
+                    } else {
+                        console.log("error while retrieving profile");
+                    }
+                } catch (error) {
+                    console.error(error);
+                };
+            };
+            userData();
         }
-    }, [navigate]);
+    }, [dispatch, token]);
+            
+        
 
     const handleSignOut = () => {
         localStorage.removeItem('authToken');
@@ -26,14 +69,14 @@ const User = () => {
         <div className='page-container'>
             <Navigation 
                 iconUser='fa fa-user-circle'
-                userName= 'Tony Jarvis'
+                userName= 'pseudo'
                 SignInOut='Sign Out'
                 iconInOut='fa fa-sign-out'
                 onLogOut={handleSignOut}
             />
             <main className='main bg-dark'>
             <div className="header">
-                    <h1>Welcome back<br />Tony Jarvis!</h1>
+                    <h1>Welcome back<br />{userData.firstname} {userData.lastname} !</h1>
                     <Button 
                         title='Edit Name' 
                         className='edit-button' 
