@@ -7,21 +7,23 @@ import Account from '../../components/account/Account';
 import { useDispatch, useSelector } from 
 'react-redux';
 import { userProfile } from '../../actions/user.action';
-
-
+import { loginSuccess } from '../../actions/auth.action';
 
 
 const User = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const storedToken = localStorage.getItem('token');
     const token = useSelector((state) => state.auth.token);
     const userData = useSelector((state) => state.user.userData);
 
    
     
     useEffect(() => {
-        if (!token) {
+        if (!storedToken && !token) {
             navigate('/signin');
+        } else if (storedToken && !token) {
+            dispatch(loginSuccess(storedToken));    
         }else {
             const userData = async () => {
                 try {
@@ -33,8 +35,7 @@ const User = () => {
                         },
                     });
                     if (response.ok) {
-                        const data = await response.json();
-                        console.log(data) 
+                        const data = await response.json(); 
 
                         const userData = {
                             createdAt: data.body.createdAt,
@@ -55,7 +56,7 @@ const User = () => {
             };
             userData();
         }
-    }, [dispatch, token]);
+    }, [dispatch, token, navigate]);
             
         
 

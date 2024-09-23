@@ -69,6 +69,7 @@ function Signin() {
             if (response.ok) {
                 const data = await response.json();
                 const token = data.body.token;
+                localStorage.setItem("token", token);
                 dispatch(loginSuccess(token));
                 if (rememberMe) {
                     localStorage.setItem("email", email);
