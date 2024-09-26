@@ -1,6 +1,7 @@
 import React, { useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navigation from '../../components/navigation/Navigation';
+import FormEditSurname from '../../components/edit-profile/formEditSurname';
 import Footer from '../../components/footer/Footer';
 import Button from '../../components/button/Button';
 import Account from '../../components/account/Account';
@@ -42,10 +43,11 @@ const User = () => {
                             updatedAt: data.body.updatedAt,
                             id: data.body.id,
                             email: data.body.email,
-                            firstname: data.body.firstName,
-                            lastname: data.body.lastName,
-                            username: data.body.userName
+                            firstName: data.body.firstName,
+                            lastName: data.body.lastName,
+                            userName: data.body.userName
                         }
+                        
                         dispatch(userProfile(userData));
                     } else {
                         console.log("error while retrieving profile");
@@ -61,6 +63,7 @@ const User = () => {
         
 
     const handleSignOut = () => {
+        localStorage.removeItem('userData');
         dispatch(logout());
 
 };
@@ -76,12 +79,13 @@ const User = () => {
             />
             <main className='main bg-dark'>
             <div className="header">
-                    <h1>Welcome back<br />{userData.firstname} {userData.lastname} !</h1>
+                    <h1>Welcome back<br />{userData.firstName} {userData.lastName} !</h1>
                     <Button 
                         title='Edit Name' 
                         className='edit-button' 
                     />
             </div>    
+            <FormEditSurname />
             <h2 className="sr-only">Accounts</h2>
 
 

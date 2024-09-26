@@ -1,11 +1,13 @@
 import { LOGOUT } from "../actions/auth.action"
-import { GET_USERPROFILE, EDIT_USERNAME, } from "../actions/user.action"
+import { GET_USERPROFILE } from "../actions/user.action"
+import { UPDATE_PROFILE_SUCCESS, UPDATE_PROFILE_FAILURE } from '../actions/user.action';
 
-/* Initial user state */
+
 const initialState = {
     status: 'VOID',
-    userData: {}
-}
+    userData: {},
+    error: null,
+};
 
 export const userReducer = (state = initialState, action ) => {
     switch (action.type) {
@@ -15,15 +17,19 @@ export const userReducer = (state = initialState, action ) => {
                 status: 'SUCCEEDED',
                 userData: action.payload
             }
-        case EDIT_USERNAME: 
+        case UPDATE_PROFILE_SUCCESS:
+            
             return {
                 ...state,
-                status: "MODIFIED",
-                userData: {
-                    ...state.userData,
-                    username: action.payload
-                } 
-            } 
+                userData: action.payload,
+                error: null,
+                
+            };
+        case UPDATE_PROFILE_FAILURE:
+            return {
+                ...state,
+                error: action.payload,
+            };
         case LOGOUT: {
             return initialState;  
         }   

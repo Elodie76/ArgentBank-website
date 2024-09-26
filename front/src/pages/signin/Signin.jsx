@@ -1,4 +1,4 @@
-import React, {  useState, useEffect } from 'react';
+import React, {  useState, useEffect  } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navigation from '../../components/navigation/Navigation';
 import Footer from '../../components/footer/Footer';
@@ -97,6 +97,7 @@ function Signin() {
             <Navigation
                 SignInOut='Sign In'
                 iconInOut='fa fa-user-circle'
+                display='display'
             />
             <main className="main bg-dark">
                 <section className='sign-in-content'>

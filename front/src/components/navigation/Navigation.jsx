@@ -1,12 +1,16 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 
 
 
 const Navigation = (props) => {
+    const location = useLocation();
     const userData = useSelector((state) => state.user.userData);
+    
+    
     return (
         <nav >
             <ul className='main-nav'>
@@ -18,13 +22,15 @@ const Navigation = (props) => {
                     
                 </NavLink>
                 <div className='menu-links'>
-                    <NavLink className='main-nav-item '  to={'/user'}>
+                {location.pathname === '/user' && (
+                    <NavLink className='main-nav-item' >
                         <li className={props.display}>
                             <i className={props.iconUser}></i>
-                            <p>{userData.username}</p>
+                            <p>{userData.userName || 'User'}</p>
                         </li>
                         
                     </NavLink> 
+                    )}
                     <NavLink 
                         className='main-nav-item' 
                         to={'/signin'}
