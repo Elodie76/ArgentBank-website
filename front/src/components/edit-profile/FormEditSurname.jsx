@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateProfile } from '../../actions/user.action';
+
+
 
 const FormEditSurname = () => {
 
@@ -8,6 +10,12 @@ const FormEditSurname = () => {
     const userData = useSelector((state) => state.user.userData);
 
     const [userName, setUserName] = useState(userData.userName || '');
+
+    useEffect(() => {
+        if (userData.userName) {
+          setUserName(userData.userName); // Met à jour quand userData est modifié
+        }
+      }, [userData]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -24,7 +32,7 @@ const FormEditSurname = () => {
                             <input
                                 type="text"
                                 id="username"
-                                value={userName || ''}
+                                value={userName}
                                 // defaultValue={userData.username || ''}
                                 onChange={(event) => setUserName(event.target.value)}
                             />
