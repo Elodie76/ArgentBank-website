@@ -1,4 +1,4 @@
-import React, { useEffect} from 'react';
+import React, { useEffect, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navigation from '../../components/navigation/Navigation';
 import FormEditSurname from '../../components/edit-profile/formEditSurname';
@@ -17,7 +17,7 @@ const User = () => {
     const storedToken = localStorage.getItem('token');
     const token = useSelector((state) => state.auth.token);
     const userData = useSelector((state) => state.user.userData);
-
+    
    
     
     useEffect(() => {
@@ -59,9 +59,20 @@ const User = () => {
             userData();
         }
     }, [dispatch, token, navigate]);
-            
-        
+         
 
+    // Gestion du bouton d'édition et affichage du formulaire
+    const [isEditing, setIsEditing] = useState(false);
+    const handleEditClick = () => {
+        console.log("Edit button clicked");
+        setIsEditing(true); 
+    };
+    const handleCancelClick = () => {
+        console.log("Cancel button clicked");
+        setIsEditing(false); 
+    }; 
+
+    // Gestion de la déconnection
     const handleSignOut = () => {
         localStorage.removeItem('userData');
         dispatch(logout());
@@ -80,12 +91,17 @@ const User = () => {
             <main className='main bg-dark'>
             <div className="header">
                     <h1>Welcome back<br />{userData.firstName} {userData.lastName} !</h1>
+                    {!isEditing ? (
                     <Button 
                         title='Edit Name' 
                         className='edit-button' 
+                        onClick={handleEditClick}
                     />
+                    ) : (
+                    <FormEditSurname onCancel={handleCancelClick} />
+                    )}
             </div>    
-            <FormEditSurname />
+            
             <h2 className="sr-only">Accounts</h2>
 
 

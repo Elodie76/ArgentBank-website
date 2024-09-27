@@ -4,7 +4,7 @@ import { updateProfile } from '../../actions/user.action';
 
 
 
-const FormEditSurname = () => {
+const FormEditSurname = ({ onCancel }) => {
 
     const dispatch = useDispatch();
     const userData = useSelector((state) => state.user.userData);
@@ -57,7 +57,7 @@ const FormEditSurname = () => {
                         </div>
                         <div className="buttons">
                             <button className="edit-username-button" type='submit' >Save</button>
-                            <button className="edit-username-button" type='button' onClick={() => setDisplay(!display)}>Cancel</button>
+                            <button className="edit-username-button" type='button' onClick={onCancel}>Cancel</button>
                         </div>
                         
                     </form>
