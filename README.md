@@ -60,8 +60,12 @@ Once you run the `populate-db` script, you should have two users in your databas
 - Password: `password456`
 
 ## API Documentation
-
+# V1
 To learn more about how the API works, once you have started your local environment, you can visit: http://localhost:3001/api-docs
+
+# V2
+API version 2 is not a final version. This study proposes new endpoints necessary for the dynamic development of transaction management. You can view these endpoints here:
+https://editor.swagger.io/?_gl=1*1p364a3*_gcl_au*NjQyOTU3NDUwLjE3Mjc2OTAxNjQ.
 
 ## Design Assets
 

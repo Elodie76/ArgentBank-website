@@ -2,10 +2,10 @@ swagger: '2.0'
 info:
   title: Bank Argent API documentation
   description: Contains all available API endpoints in this codebase
-  version: '1.0.0'
+  version: '2.0.0'
   termsOfService: 'http://swagger.io/terms/'
 host: localhost:3001
-basePath: /api/v1
+basePath: /api/v2
 schemes:
   - http
 paths:
@@ -101,6 +101,166 @@ paths:
           description: Invalid Fields
         '500':
           description: Internal Server Error
+  /user/account:
+    get: 
+      tags:
+        - Accounts and Transactions Module
+      summary: All accounts
+      description: API for retrieving all user accounts
+      security:
+        - Bearer: []
+      responses: 
+        '200':
+          description: All accounts retrieved successfully
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/AccountData'
+        '401':
+          description: Unauthorized user
+        '500':
+          description: Internal Server Error
+  /account/{accountID}/transactions:
+    get:
+      tags:
+        - Accounts and Transactions Module
+      summary: Account transactions
+      description: API for retrieving list of transactions assiocated with an account
+      security: 
+        - Bearer: []
+      parameters:
+        - in: path
+          name: accountID
+          description: ID of an account
+          required: true
+          type: string
+      responses:
+        '200':
+          description: All transactions retrieved successfully
+          schema: 
+            type: array
+            items:
+              $ref: '#/definitions/TransactionsResponse'
+        '401':
+          description: Unauthorized user
+        '404': 
+          description: Account not found
+        '500':
+          description: Internal Server Error
+  /transactions/{transactionID}/category:
+    put:
+      tags:
+        - Accounts and Transactions Module
+      summary: Update transaction's category
+      description: API for updating category of transaction
+      security: 
+        - Bearer: []
+      parameters:
+        - in: path
+          name: transactionID
+          description: ID of a transaction
+          required: true
+          type: string
+        - in: body
+          name: category
+          description: Modified transaction's category
+          required: true
+          schema:
+            $ref: '#/definitions/TransactionCategory'
+      responses:
+        '200':
+          description: Transaction's category modified successfully
+          schema: 
+            $ref: '#/definitions/TransactionCategory'
+        '401': 
+          description: Unauthorized user
+        '404': 
+          description: Transaction not found
+        '500': 
+          description: Internal Servor Error
+  /transactions/{transactionID}/note:
+    post:
+      tags:
+        - Accounts and Transactions Module
+      summary: Add transaction's note
+      description: API for adding a note to a transaction
+      security: 
+        - Bearer: []
+      parameters:
+        - in: path
+          name: transactionID
+          description: ID of a transaction
+          required: true
+          type: string
+        - in: body
+          name: note
+          description: New transaction's note
+          required: true
+          schema: 
+            $ref: '#/definitions/TransactionNote'
+      responses:
+        '200':
+          description: Note added to the transaction successfully
+          schema: 
+            $ref: '#/definitions/TransactionResponseNote'
+        '401':
+          description: Unauthorized user
+        '404':
+          description: Note not created
+        '500':
+          description: Internal Server Error
+    put:
+      tags:
+        - Accounts and Transactions Module
+      summary: Modify transaction's note
+      description: API for modifying a note of a transaction
+      security: 
+        - Bearer: []
+      parameters:
+        - in: path
+          name: transactionID
+          description: ID of a transaction
+          required: true
+          type: string
+        - in: body
+          name: note
+          description: Modify transaction's note
+          required: true
+          schema: 
+            $ref: '#/definitions/TransactionNote'
+      responses:
+        '200':
+          description: Note modified successfully
+          schema:
+            $ref: '#/definitions/TransactionResponseNote'
+        '401':
+          description: Unauthorized user
+        '404':
+          description: Note not modified
+        '500':
+          description: Internal Server Error
+    delete:
+      tags:
+        - Accounts and Transactions Module
+      summary: Delete transaction's note
+      description: API for deleting a note of a transaction
+      security:
+        - Bearer: []
+      parameters:
+        - in: path
+          name: transactionID
+          description: ID of a transaction
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Note deleted successfully
+        '401':
+          description: Unauthorized user
+        '404':
+          description: Note not deleted
+        '500':
+          description: Internal Server Error
 securityDefinitions:
   Bearer:
     type: apiKey
@@ -156,320 +316,65 @@ definitions:
     properties:
       userName:
         type: string
-
-
-/account :
-    post:
-      security:
-        - Bearer: []
-      tags:
-        - Account Module
-      summary: User account
-      description: API for displaying one account from one user, and access its transactions
-      parameters:
-        - in: header
-          name: Authorization
-          description: Attach Bearer JWT token
-          required: true
+  AccountData:
+      type: object
+      properties:
+        accountID:
           type: string
-        - in: body
-          name: ID
-          description: the transaction's ID
-          required: true
-          schema:
-            $ref: '#/definitions/UserID'
-      produces:
-        - application/json
-      responses:
-        '200':
-          description: Transaction retrieved successully
-          schema:
-            $ref: '#/definitions/Account'
-        '403':
-          description: You are not allowed to access this account
-        '404':
-          description: User with ID :id not found in database
-        '500':
-          description: Internal Server Error
-
-
-  /transactions/all :
-    get:
-      security:
-        - Bearer: []
-      tags:
-        - Transactions Module
-      summary: All transactions
-      description: API for getting all transactions for the user
-      parameters:
-        - in: header
-          name: Authorization
-          description: Attach Bearer JWT token
-          required: true
+          description: account ID
+        accountName:
           type: string
-      produces:
-        - application/json
-      responses:
-        '200':
-          description: User transactions retrieved successully
-          schema:
-            $ref: '#/definitions/TransactionsResponse'
-        '401':
-          description: Unauthorized (token issue)
-        '500':
-          description: Internal Server Error
-  /transactions/get :
-    post:
-      security:
-        - Bearer: []
-      tags:
-        - Transactions Module
-      summary: One transaction from URL id
-      description: API for displaying one transaction from its id
-      parameters:
-        - in: header
-          name: Authorization
-          description: Attach Bearer JWT token
-          required: true
+          description: account name
+        accountCurrency:
           type: string
-        - in: body
-          name: ID
-          description: the transaction's ID
-          required: true
-          schema:
-            $ref: '#/definitions/TransactionID'
-      produces:
-        - application/json
-      responses:
-        '200':
-          description: Transaction retrieved successully
-          schema:
-            $ref: '#/definitions/Transaction'
-        '403':
-          description: user id (from token) mismatch with transaction.ownerid 
-        '404':
-          description: Transaction with ID :id not found in database
-        '500':
-          description: Internal Server Error
-  /transactions/create :
-    post:
-      security:
-        - Bearer: []
-      tags:
-        - Transactions Module
-      summary: One transaction from URL id
-      description: API for creating a new transaction
-      parameters:
-        - in: header
-          name: Authorization
-          description: Attach Bearer JWT token
-          required: true
-          type: string
-        - in: body
-          name: body
-          description: Create a new transaction
-          required: true
-          schema:
-            $ref: '#/definitions/SetTransaction'
-      produces:
-        - application/json
-      responses:
-        '200':
-          description: Transaction created successully
-          schema:
-            $ref: '#/definitions/Transaction'
-        '401':
-          description: Unauthorized (token issue)
-        '403':
-          description: user id (from token) mismatch with transaction.ownerid 
-        '500':
-          description: Internal Server Error
-  /transactions/edit :
-    put:
-      security:
-        - Bearer: []
-      tags:
-        - Transactions Module
-      summary: One transaction from URL id
-      description: API for updating one transaction from its id
-      parameters:
-        - in: header
-          name: Authorization
-          description: Attach Bearer JWT token
-          required: true
-          type: string
-        - in: body
-          name: body
-          description: Create a new transaction
-          required: true
-          schema:
-            $ref: '#/definitions/Transaction'
-      produces:
-        - application/json
-      responses:
-        '200':
-          description: Transaction updated successully
-          schema:
-            $ref: '#/definitions/Transaction'
-        '401':
-          description: Unauthorized (token issue)
-        '403':
-          description: user id (from token) mismatch with transaction.ownerid 
-        '404':
-          description: Transaction with ID :id not found in database
-        '500':
-          description: Internal Server Error
-  /transactions/delete :
-    delete:
-      security:
-        - Bearer: []
-      tags:
-        - Transactions Module
-      summary: One transaction from URL id
-      description: API for deleting one transaction from its id
-      parameters:
-        - in: header
-          name: Authorization
-          description: Attach Bearer JWT token
-          required: true
-          type: string
-        - in: body
-          name: ID
-          description: the transaction's ID
-          required: true
-          schema:
-            $ref: '#/definitions/TransactionID'
-      produces:
-        - application/json
-      responses:
-        '200':
-          description: Transaction deleted successully
-        '401':
-          description: Unauthorized (token issue)
-        '403':
-          description: user id (from token) mismatch with transaction.ownerid 
-        '404':
-          description: Transaction with ID :id not found in database
-        '500':
-          description: Internal Server Error
-securityDefinitions:
-  Bearer:
-    type: apiKey
-    name: Authorization
-    in: header
-definitions:
-  User:
-    properties:
-      id:
-        type: string
-      email:
-        type: string
-        description: user email
-      password:
-        type: string
-        description: user password
-      firstName:
-        type: string
-        description: user first name
-      lastName:
-        type: string
-        description: user last name
-  Login:
-    properties:
-      email:
-        type: string
-        description: user email
-      password:
-        type: string
-        description: user password
-  ApiResponse:
-    type: object
-    properties:
-      status:
-        type: integer
-      message:
-        type: string
-      body:
-        type: object
-        properties:
-          id:
-            type: string
-          email:
-            type: string
-  LoginResponse:
-    type: object
-    properties:
-      token:
-        type: string
+          description: account currency
+        currentBalance:
+          type: number
+          description: current account balance
+          format: double
   TransactionsResponse:
     type: object
     properties:
-      status:
-        type: integer
-      message:
+      transactionID: 
         type: string
-      body:
-        type: object
-        properties:
-          transactions:
-            type: array
-            items:
-              $ref: '#/definitions/Transaction'
-  UserProfile:
-    type: object
-    properties:
-      firstName:
+        description: transaction ID
+      transactionType:
         type: string
-      lastName:
-        type: string
-  SetTransaction:
-    type: object
-    properties:
+        description: type of transaction
       date:
-        type: object
-        description: Date object
+        type: string
+        format: date-time
+        description: date of transaction
       description:
         type: string
+        description: description of transaction
       amount:
         type: number
-  Transaction:
-    type: object
-    properties:
-      id:
-        type: string
-      ownerid:
-        $ref: '#/definitions/User/properties/id'
-      date:
-        type: object
-        description: Date object
-      description:
-        type: string
-      amount:
+        description: transaction amout
+      balance:
         type: number
-  TransactionID:
-    type: object
-    description: ID of an existing transaction
-    properties:
-      id:
-        $ref: '#/definitions/Transaction/properties/id'
-  UserID:
-    type: object
-    description: ID of an existing user
-    properties:
-      id:
-        $ref: '#/definitions/User/properties/id'
-  Account:
+        description: available balance
+        format: double
+      category:
+        type: string
+        description: name of the category
+      note: 
+        type: string
+        description: user note
+  TransactionCategory:
     type: object
     properties:
-      transactions:
-        properties:
-          id:
-            type: string
-          name:
-            type: string
-          transactions:
-            type: array
-            items:
-              $ref: '#/definitions/Transaction'
-          balance:
-            type: number
+      category:
+        type: string
+  TransactionNote:
+    type: object
+    properties:
+      note:
+        type: string
+  TransactionResponseNote:
+    type: object
+    properties:
+      note:
+        type: string
+           
+  
